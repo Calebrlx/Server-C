@@ -34,10 +34,16 @@ namespace Authentication {
     }
 
     std::string hashPassword(const std::string& password) {
-        return bcrypt::generateHash(password);
+        char salt[BCRYPT_HASHSIZE];
+        char hash[BCRYPT_HASHSIZE];
+    
+        bcrypt_gensalt(12, salt);
+        bcrypt_hashpw(password.c_str(), salt, hash);
+    
+        return std::string(hash);
     }
-
+    
     bool verifyPassword(const std::string& password, const std::string& hashed_password) {
-        return bcrypt::validatePassword(password, hashed_password);
+        return bcrypt_checkpw(password.c_str(), hashed_password.c_str()) == 0;
     }
 }
