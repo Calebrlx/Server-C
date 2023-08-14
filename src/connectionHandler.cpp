@@ -106,6 +106,35 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     sendJsonResponse(client_socket, response, 200);
 }
 
+std::string ConnectionHandler::extractJsonBody(const std::string& request) {
+    std::size_t contentLengthStart = request.find("Content-Length: ");
+    if (contentLengthStart == std::string::npos) {
+        return ""; // Handle error if Content-Length header is not found
+    }
+    contentLengthStart += 16; // Length of "Content-Length: "
+    std::size_t contentLengthEnd = request.find("\r\n", contentLengthStart);
+    int contentLength = std::stoi(request.substr(contentLengthStart, contentLengthEnd - contentLengthStart));
+
+    std::size_t msg_start = request.find("\r\n\r\n");
+    return request.substr(msg_start + 4, contentLength); // Extract the JSON content according to the Content-Length
+}
+
+void ConnectionHandler::sendErrorResponse(const std::string& message, int status_code) {
+    nlohmann::json response;
+    response["success"] = false;
+    response["error"] = message;
+
+    sendJsonResponse(response, status_code);
+}
+
+void ConnectionHandler::sendSuccessResponse(const std::string& message) {
+    nlohmann::json response;
+    response["success"] = true;
+    response["message"] = message;
+
+    sendJsonResponse(response, 200);
+}
+
 bool ConnectionHandler::validateToken(const std::string& token) {
     return Authentication::validateToken(token);
 }
