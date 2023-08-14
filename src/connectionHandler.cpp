@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string> 
 #include <sys/socket.h>
+#include <sys/select.h>
 
 ConnectionHandler::ConnectionHandler() : server_fd(0), new_socket(0), address() {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -28,12 +29,32 @@ bool ConnectionHandler::start() {
     }
 
     while (run_server) { // Check the run_server flag in the loop
-        socklen_t addrlen = sizeof(address);
-        new_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
-        if (new_socket < 0) {
-            std::cerr << "Accept failed\n";
+        fd_set read_fds;
+        FD_ZERO(&read_fds);
+        FD_SET(server_fd, &read_fds);
+
+        struct timeval timeout;
+        timeout.tv_sec = 1; // 1-second timeout
+        timeout.tv_usec = 0;
+
+        int activity = select(server_fd + 1, &read_fds, NULL, NULL, &timeout);
+
+        if (activity < 0) {
+            std::cerr << "Select error\n";
             return false;
         }
+
+        if (activity == 0) {
+            continue; // Timeout occurred, loop again to check run_server
+        }
+
+        if (FD_ISSET(server_fd, &read_fds)) {
+            socklen_t addrlen = sizeof(address);
+            new_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
+            if (new_socket < 0) {
+                std::cerr << "Accept failed\n";
+                return false;
+            }
 
         // Create a separate thread to handle each client connection
         std::thread client_thread(&ConnectionHandler::handleClient, this, new_socket);
