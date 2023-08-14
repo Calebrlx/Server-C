@@ -81,10 +81,10 @@ void ConnectionHandler::handleClient(int client_socket) {
 
     if (received.find("/register") != std::string::npos) {
         handleRegisterRequest(client_socket, received);
-        std::cout >> "Register user request recieved"
+        std::cout << "Register user request received\n"; // Fixed here
     } else if (received.find("/login") != std::string::npos) {
         handleLoginRequest(client_socket, received);
-        std::cout >> "login request recieved"
+        std::cout << "Login request received\n"; // Fixed here
     }
 
     close(client_socket); // Close the connection
