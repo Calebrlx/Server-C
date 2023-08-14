@@ -12,7 +12,7 @@ find_package(PkgConfig REQUIRED)
 pkg_check_modules(LIBJWT REQUIRED IMPORTED_TARGET jwt-cpp nlohmann_json)
 
 # Include the directories for headers
-include_directories("/usr/local/include/jwt-cpp")
+include_directories("/usr/local/include/jwt-cpp" "~/json.hpp")
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentication.cpp)
@@ -20,15 +20,3 @@ add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentica
 # Link the libraries
 target_link_libraries(MyServerApp PRIVATE PkgConfig::LIBJWT -lcrypt)
 
-include(FetchContent)
-
-FetchContent_Declare(
-  nlohmann_json
-  URL https://github.com/nlohmann/json/releases/download/v3.10.2/include.zip
-)
-
-FetchContent_GetProperties(nlohmann_json)
-if(NOT nlohmann_json_POPULATED)
-  FetchContent_Populate(nlohmann_json)
-  include_directories(${nlohmann_json_SOURCE_DIR})
-endif()
