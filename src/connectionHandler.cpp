@@ -140,15 +140,6 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     sendJsonResponse(client_socket, response, 200);
 }
 
-
-nlohmann::json json_obj;
-try {
-    json_obj = nlohmann::json::parse(json_str);
-} catch (const nlohmann::json::exception& e) {
-    sendErrorResponse(client_socket, "Invalid JSON", 400);
-    return;
-}
-
 void ConnectionHandler::sendErrorResponse(int client_socket, const std::string& message, int status_code) {
     nlohmann::json response;
     response["success"] = false;
