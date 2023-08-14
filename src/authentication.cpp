@@ -11,12 +11,14 @@ namespace Authentication {
     const char* secret_key_env = std::getenv("SECRET_KEY");
     std::string secret_key;
 
-    if (secret_key_env != nullptr) {
-        secret_key = secret_key_env;
-    } else {
-        // Handle the case where the environment variable is not set
-        std::cerr << "Error: SECRET_KEY environment variable not set." << std::endl;
-        // You may choose to exit the program or handle the error in another way
+    void initializeSecretKey() {
+        if (secret_key_env != nullptr) {
+            secret_key = secret_key_env;
+        } else {
+            // Handle the case where the environment variable is not set
+            std::cerr << "Error: SECRET_KEY environment variable not set." << std::endl;
+            // You may choose to exit the program or handle the error in another way
+        }
     }
 
 
