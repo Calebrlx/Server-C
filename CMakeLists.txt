@@ -20,6 +20,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 
 # Include the directories for headers
 include_directories("/usr/local/include/jwt-cpp")
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp)
