@@ -131,6 +131,7 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     std::string json_str = extractJsonBody(received);
     if (json_str.empty()) {
         sendErrorResponse(client_socket, "Invalid request body", 400);
+        std::cout << "Invalid request body (400)\n";
         return;
     }
 
@@ -139,19 +140,25 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
         json_obj = nlohmann::json::parse(json_str);
     } catch (const nlohmann::json::exception& e) {
         sendErrorResponse(client_socket, "Invalid JSON", 400);
+        std::cout << "Invalid JSON (400)\n";
         return;
     }
 
     if (!json_obj.contains("username") || !json_obj.contains("password")) {
         sendErrorResponse(client_socket, "Missing username or password", 400);
+        std::cout << "Missing username or password\n";
         return;
     }
 
     std::string username = json_obj["username"];
     std::string password = json_obj["password"];
 
+    std::cout << "User: " << username << endl;
+    std::cout << "Pass: " << password << endl;
+
     if (users.find(username) == users.end() || !Authentication::verifyPassword(password, users[username])) {
         sendErrorResponse(client_socket, "Invalid credentials", 401);
+        std::cout << "Invalid credentials" << endl;
         return;
     }
 
