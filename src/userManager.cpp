@@ -56,17 +56,20 @@ bool UserManager::loginUser(const nlohmann::json& credentials, std::string& toke
             "SELECT password FROM users WHERE username = ?");
         pstmt->setString(1, credentials["username"]);
         sql::ResultSet* res = pstmt->executeQuery();
-        
+
         if (res->next()) {
             std::string stored_hashed_password = res->getString("password");
             if (Authentication::verifyPassword(credentials["password"], stored_hashed_password)) {
                 token = Authentication::generateToken(credentials["username"]);
                 delete res;
                 delete pstmt;
+                std::cout << "Authentication success for user: " << credentials["username"] << " | pass: " << credentials["password"] << '\n';
                 return true;
+            } else {
+                std::cout << "Authentication failed for user: " << credentials["username"] << " | pass: " << credentials["password"] << '\n';
             }
         }
-        
+
         delete res;
         delete pstmt;
         return false;
@@ -75,3 +78,4 @@ bool UserManager::loginUser(const nlohmann::json& credentials, std::string& toke
         return false;
     }
 }
+
