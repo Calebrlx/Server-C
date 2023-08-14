@@ -21,7 +21,7 @@ bool UserManager::connectToDatabase() {
     try {
         sql::mysql::MySQL_Driver* driver;
         driver = sql::mysql::get_mysql_driver_instance();
-        con.reset(driver->connect("tcp://10.0.0.40:3306", MySQL_user_env, "ODDSEA270"));
+        con.reset(driver->connect("tcp://10.0.0.40:3306", MySQL_user_env, MySQL_pass_env));
         con->setSchema("database_name");
         return true;
     } catch (const sql::SQLException& e) {
