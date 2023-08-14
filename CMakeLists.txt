@@ -38,6 +38,6 @@ target_link_libraries(MyServerApp PRIVATE
   Threads::Threads
   nlohmann_json::nlohmann_json
   -lcrypt
-  /usr/local/lib/libbcrypt.a)
+  /usr/local/lib/bcrypt.a)
 
 
