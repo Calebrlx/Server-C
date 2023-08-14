@@ -1,9 +1,9 @@
 #include "authentication.h"
 #include <crypt.h>
 #include <random>
+#include <iostream>
 
 namespace Authentication {
-
     std::string generateToken(const std::string& username) {
         auto token = jwt::create()
             .set_issuer("auth0")
@@ -28,7 +28,6 @@ namespace Authentication {
     }
 
     std::string hashPassword(const std::string& password) {
-        // Generate salt
         std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         std::random_device random_device;
         std::mt19937 generator(random_device());
@@ -41,9 +40,9 @@ namespace Authentication {
 
         std::string salt = "$2a$05$" + random_salt;
 
-        // Generate hash
         const char* hashed_pw_cstr = crypt(password.c_str(), salt.c_str());
         if (!hashed_pw_cstr) {
+            std::cerr << "Error hashing password\n";
             return "";
         }
         return hashed_pw_cstr;
