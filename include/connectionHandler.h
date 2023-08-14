@@ -29,5 +29,8 @@ private:
     void handleLoginRequest(const std::string& received);
     void sendErrorResponse(const std::string& message, int status_code);
     void sendSuccessResponse(const std::string& message);
+    void handleClient(int client_socket);
+    void handleRegisterRequest(int client_socket, const std::string& received);
+    void handleLoginRequest(int client_socket, const std::string& received);
     bool validateToken(const std::string& token); // Function to validate tokens
 };
