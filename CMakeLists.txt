@@ -25,11 +25,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories("/usr/local/include/bcrypt") # Include the path to bcrypt headers
 
-## link_libraries("/usr/local/lib/bcrypt.a")
-
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(bcrypt REQUIRED)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp src/bcrypt.cpp)
@@ -38,4 +35,5 @@ add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentica
 target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
-target_link_libraries(MyServerApp PRIVATE /usr/local/lib/bcrypt.a)
+target_link_libraries(MyServerApp PRIVATE /usr/local/lib/bcrypt.a) # Directly link to bcrypt library
+
