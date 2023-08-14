@@ -33,14 +33,11 @@ find_package(OpenSSL REQUIRED)
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp src/bcrypt.cpp)
 
-# Link the libraries
-target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(MyServerApp PRIVATE Threads::Threads)
-target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
-target_link_libraries(MyServerApp PRIVATE /usr/local/lib/libbcrypt.a) # Link to libbcrypt
-target_link_libraries(MyServerApp ${MYSQLCONNECTORCPP_LIBRARIES})
-target_link_libraries(MyServerApp "/usr/lib/aarch64-linux-gnu/libmysqlcppconn.so")
-target_link_libraries(MyServerApp PRIVATE "/usr/lib/aarch64-linux-gnu/libmysqlcppconn.so"
-    # other libraries...
-)
+target_link_libraries(MyServerApp PRIVATE
+  OpenSSL::SSL OpenSSL::Crypto
+  Threads::Threads
+  nlohmann_json::nlohmann_json
+  -lcrypt
+  /usr/local/lib/libbcrypt.a)
+
 
