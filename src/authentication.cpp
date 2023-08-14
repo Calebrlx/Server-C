@@ -1,4 +1,5 @@
 #include "authentication.h"
+#include "userManager.h"
 #include <crypt.h>
 #include <random>
 #include <iostream>
