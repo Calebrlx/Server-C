@@ -8,7 +8,7 @@
 #include <chrono>
 
 namespace Authentication {
-    std::string secret_key = std::getenv("YOUR_SECRET_KEY_ENV_VAR");
+    std::string secret_key = std::getenv("SECRET_KEY");
 
     std::string generateToken(const std::string& username) {
         auto token = jwt::create()
