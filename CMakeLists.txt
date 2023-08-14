@@ -27,6 +27,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories("~/libbcrypt")
 include_directories(${MYSQLCONNECTORCPP_INCLUDE_DIRS})
+include_directories("/usr/include")
 link_directories(${MYSQLCONNECTORCPP_LIBRARY_DIRS})
 
 find_package(Threads REQUIRED)
@@ -43,5 +44,5 @@ target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
 target_link_libraries(MyServerApp PRIVATE /usr/local/lib/libbcrypt.a) # Link to libbcrypt
 target_link_libraries(MyServerApp ${MYSQLCONNECTORCPP_LIBRARIES})
-
+target_link_libraries(MyServerApp "/usr/lib/aarch64-linux-gnu/libmysqlcppconn.so")
 
