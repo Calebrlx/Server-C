@@ -29,6 +29,7 @@ include_directories("/usr/local/include/bcrypt") # Include the path to bcrypt he
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(bcrypt REQUIRED)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp src/bcrypt.cpp)
@@ -37,4 +38,4 @@ add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentica
 target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
-target_link_libraries(MyServerApp PRIVATE /usr/local/lib/bcrypt.a) # Link against the bcrypt library
+target_link_libraries(MyServerApp PRIVATE bcrypt)
