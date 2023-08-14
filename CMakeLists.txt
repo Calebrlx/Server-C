@@ -22,7 +22,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 include_directories("/usr/local/include/jwt-cpp")
 
 # Define the executable target
-add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentication.cpp)
+add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp)
 
 # Link the libraries
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
