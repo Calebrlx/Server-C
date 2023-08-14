@@ -153,12 +153,12 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     std::string username = json_obj["username"];
     std::string password = json_obj["password"];
 
-    std::cout << "User: " << username << endl;
-    std::cout << "Pass: " << password << endl;
+    std::cout << "User: " << username << "\n";
+    std::cout << "Pass: " << password << "\n";
 
     if (users.find(username) == users.end() || !Authentication::verifyPassword(password, users[username])) {
         sendErrorResponse(client_socket, "Invalid credentials", 401);
-        std::cout << "Invalid credentials" << endl;
+        std::cout << "Invalid credentials\n";
         return;
     }
 
