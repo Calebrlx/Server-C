@@ -119,20 +119,20 @@ std::string ConnectionHandler::extractJsonBody(const std::string& request) {
     return request.substr(msg_start + 4, contentLength); // Extract the JSON content according to the Content-Length
 }
 
-void ConnectionHandler::sendErrorResponse(const std::string& message, int status_code) {
+void ConnectionHandler::sendErrorResponse(int client_socket, const std::string& message, int status_code) {
     nlohmann::json response;
     response["success"] = false;
     response["error"] = message;
 
-    sendJsonResponse(response, status_code);
+    sendJsonResponse(client_socket, response, status_code);
 }
 
-void ConnectionHandler::sendSuccessResponse(const std::string& message) {
+void ConnectionHandler::sendSuccessResponse(int client_socket, const std::string& message) {
     nlohmann::json response;
     response["success"] = true;
     response["message"] = message;
 
-    sendJsonResponse(response, 200);
+    sendJsonResponse(client_socket, response, 200);
 }
 
 bool ConnectionHandler::validateToken(const std::string& token) {
