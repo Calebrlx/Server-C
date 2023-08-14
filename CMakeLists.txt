@@ -6,6 +6,7 @@ project(MyServerApp VERSION 1.0)
 # Specify the C++ standard
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 # Include FetchContent module
 include(FetchContent)
@@ -23,15 +24,13 @@ include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-find_package(OpenSSL REQUIRED)
-target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
-target_link_libraries(MyServerApp PRIVATE Threads::Threads)
+find_package(OpenSSL REQUIRED)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp)
 
 # Link the libraries
+target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
