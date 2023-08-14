@@ -22,6 +22,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories("~/libbcrypt")
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
