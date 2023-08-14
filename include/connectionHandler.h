@@ -30,6 +30,6 @@ private:
     void handleClient(int client_socket);
     void handleRegisterRequest(int client_socket, const std::string& received);
     void handleLoginRequest(int client_socket, const std::string& received);
-    std::string extractJsonBody(const std::string& request);
+    //std::string extractJsonBody(const std::string& request);
     bool validateToken(const std::string& token); // Function to validate tokens
 };
