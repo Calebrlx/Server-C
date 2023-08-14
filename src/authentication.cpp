@@ -3,7 +3,7 @@
 #include <random>
 #include <iostream>
 #include <cstdlib>
-#include <bcrypt/BCrypt.h>
+#include "bcrypt.h"
 #include <jwt-cpp/jwt.h>
 #include <chrono>
 
