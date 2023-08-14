@@ -38,4 +38,4 @@ add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentica
 target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
-target_link_libraries(MyServerApp PRIVATE bcrypt)
+target_link_libraries(MyServerApp PRIVATE /usr/local/lib/bcrypt.a)
