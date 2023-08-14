@@ -1,1 +1,71 @@
 
+#include "userManager.h"
+#include "authentication.h"
+
+UserManager::UserManager() {
+    connectToDatabase();
+}
+
+UserManager::~UserManager() {
+    if (con) {
+        con->close();
+    }
+}
+
+bool UserManager::connectToDatabase() {
+    try {
+        sql::mysql::MySQL_Driver* driver;
+        driver = sql::mysql::get_mysql_driver_instance();
+        con.reset(driver->connect("tcp://10.0.0.40:3306", "CALEB", "ODDSEA270"));
+        con->setSchema("database_name");
+        return true;
+    } catch (const sql::SQLException& e) {
+        std::cerr << "Database connection error: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool UserManager::registerUser(const nlohmann::json& userData) {
+    try {
+        sql::PreparedStatement* pstmt = con->prepareStatement(
+            "INSERT INTO users (username, password, subscription_status, first_name, last_name, email) "
+            "VALUES (?, ?, ?, ?, ?, ?)");
+        pstmt->setString(1, userData["username"]);
+        pstmt->setString(2, userData["password"]);
+        pstmt->setInt(3, userData["subscription_status"]);
+        pstmt->setString(4, userData["first_name"]);
+        pstmt->setString(5, userData["last_name"]);
+        pstmt->setString(6, userData["email"]);
+        pstmt->executeUpdate();
+        delete pstmt;
+        return true;
+    } catch (const sql::SQLException& e) {
+        std::cerr << "User registration error: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool UserManager::loginUser(const nlohmann::json& credentials, std::string& token) {
+    try {
+        sql::PreparedStatement* pstmt = con->prepareStatement(
+            "SELECT * FROM users WHERE username = ? AND password = ?");
+        pstmt->setString(1, credentials["username"]);
+        pstmt->setString(2, credentials["password"]);
+        sql::ResultSet* res = pstmt->executeQuery();
+        
+        if (res->next()) {
+            std::string username = res->getString("username");
+            token = Authentication::generateToken(username);
+            delete res;
+            delete pstmt;
+            return true;
+        }
+        
+        delete res;
+        delete pstmt;
+        return false;
+    } catch (const sql::SQLException& e) {
+        std::cerr << "User login error: " << e.what() << std::endl;
+        return false;
+    }
+}
