@@ -7,16 +7,26 @@ project(MyServerApp VERSION 1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# Include the jwt-cpp library and nlohmann JSON
+# Include FetchContent module
+include(FetchContent)
+
+# Include the jwt-cpp library
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBJWT REQUIRED IMPORTED_TARGET jwt-cpp nlohmann_json)
+pkg_check_modules(LIBJWT REQUIRED IMPORTED_TARGET jwt-cpp)
+
+# Include the nlohmann JSON library using FetchContent
+FetchContent_Declare(
+  nlohmann_json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.10.4
+)
+FetchContent_MakeAvailable(nlohmann_json)
 
 # Include the directories for headers
-include_directories("/usr/local/include/jwt-cpp" "~/json.hpp")
+include_directories("/usr/local/include/jwt-cpp")
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentication.cpp)
 
 # Link the libraries
-target_link_libraries(MyServerApp PRIVATE PkgConfig::LIBJWT -lcrypt)
-
+target_link_libraries(MyServerApp PRIVATE PkgConfig::LIBJWT nlohmann_json::nlohmann_json -lcrypt)
