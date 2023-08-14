@@ -135,7 +135,7 @@ void ConnectionHandler::sendSuccessResponse(int client_socket, const std::string
     sendJsonResponse(client_socket, response, 200);
 }
 
-void ConnectionHandler::sendJsonResponse(const nlohmann::json& json, int status_code) {
+void ConnectionHandler::sendJsonResponse(int client_socket, const nlohmann::json& json, int status_code) 
     std::string response_body = json.dump();
     std::string response = "HTTP/1.1 " + std::to_string(status_code) + " OK\r\n";
     response += "Content-Type: application/json\r\n";
