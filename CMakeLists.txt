@@ -32,8 +32,6 @@ link_directories(${MYSQLCONNECTORCPP_LIBRARY_DIRS})
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
-find_package(PkgConfig)
-pkg_check_modules(MYSQLCONNECTORCPP REQUIRED mysqlcppconn)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp src/bcrypt.cpp)
