@@ -1,4 +1,3 @@
-
 #include "userManager.h"
 #include "authentication.h"
 
@@ -31,7 +30,7 @@ bool UserManager::registerUser(const nlohmann::json& userData) {
             "INSERT INTO users (username, password, subscription_status, first_name, last_name, email) "
             "VALUES (?, ?, ?, ?, ?, ?)");
         pstmt->setString(1, userData["username"]);
-        pstmt->setString(2, userData["password"]);
+        pstmt->setString(2, Authentication::hashPassword(userData["password"]));
         pstmt->setInt(3, userData["subscription_status"]);
         pstmt->setString(4, userData["first_name"]);
         pstmt->setString(5, userData["last_name"]);
@@ -48,17 +47,18 @@ bool UserManager::registerUser(const nlohmann::json& userData) {
 bool UserManager::loginUser(const nlohmann::json& credentials, std::string& token) {
     try {
         sql::PreparedStatement* pstmt = con->prepareStatement(
-            "SELECT * FROM users WHERE username = ? AND password = ?");
+            "SELECT password FROM users WHERE username = ?");
         pstmt->setString(1, credentials["username"]);
-        pstmt->setString(2, credentials["password"]);
         sql::ResultSet* res = pstmt->executeQuery();
         
         if (res->next()) {
-            std::string username = res->getString("username");
-            token = Authentication::generateToken(username);
-            delete res;
-            delete pstmt;
-            return true;
+            std::string stored_hashed_password = res->getString("password");
+            if (Authentication::verifyPassword(credentials["password"], stored_hashed_password)) {
+                token = Authentication::generateToken(credentials["username"]);
+                delete res;
+                delete pstmt;
+                return true;
+            }
         }
         
         delete res;
