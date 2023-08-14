@@ -59,8 +59,9 @@ bool ConnectionHandler::start() {
         // Create a separate thread to handle each client connection
         std::thread client_thread(&ConnectionHandler::handleClient, this, new_socket);
         client_thread.detach(); // Detach the thread so it can continue independently
-    }
+        }
     return true;
+    }
 }
 
 void ConnectionHandler::stop() {
