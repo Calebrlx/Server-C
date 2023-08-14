@@ -1,4 +1,4 @@
-#include "ConnectionHandler.h"
+#include "connectionHandler.h"
 #include "authentication.h"
 #include <thread>
 #include <iostream>
