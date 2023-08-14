@@ -24,9 +24,9 @@ private:
     std::unordered_map<std::string, std::string> active_tokens; // Active tokens with associated usernames
 
     std::string extractJsonBody(const std::string& request);
-    void sendJsonResponse(const nlohmann::json& json, int status_code);
-    void sendErrorResponse(const std::string& message, int status_code);
-    void sendSuccessResponse(const std::string& message);
+    void sendJsonResponse(int client_socket, const nlohmann::json& json, int status_code);
+    void sendErrorResponse(int client_socket, const std::string& message, int status_code);
+    void sendSuccessResponse(int client_socket, const std::string& message);
     void handleClient(int client_socket);
     void handleRegisterRequest(int client_socket, const std::string& received);
     void handleLoginRequest(int client_socket, const std::string& received);
