@@ -65,7 +65,7 @@ void ConnectionHandler::handleClient(int client_socket) {
     close(client_socket); // Close the connection
 }
 void ConnectionHandler::handleRegisterRequest(int client_socket, const std::string& received) {
-    std::string json_str = extractJsonBody(received);
+    std::string json_str = extractJsonBody(rceceived);
     auto json_obj = nlohmann::json::parse(json_str);
 
     std::string username = json_obj["username"];
@@ -75,13 +75,20 @@ void ConnectionHandler::handleRegisterRequest(int client_socket, const std::stri
         sendErrorResponse(client_socket, "User already exists", 400);
         return;
     }
-
+    if (!json_obj.contains("username") || !json_obj.contains("password")) {
+    sendErrorResponse(client_socket, "Missing username or password", 400);
+    return;
+}   
     std::string hashed_pw = Authentication::hashPassword(password);
     if (hashed_pw.empty()) {
         sendErrorResponse(client_socket, "Password hashing error", 500);
         return;
     }
 
+    if (!json_obj.contains("username") || !json_obj.contains("password")) {
+    sendErrorResponse(client_socket, "Missing username or password", 400);
+    return;
+}
     users[username] = hashed_pw;
     sendSuccessResponse(client_socket, "Registration successful");
 }
