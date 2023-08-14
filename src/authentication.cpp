@@ -40,28 +40,4 @@ namespace Authentication {
     bool verifyPassword(const std::string& password, const std::string& hashed_password) {
         return bcrypt::validatePassword(password, hashed_password);
     }
-
-
-    std::string bcrypt::generateHash(const std::string &password, unsigned int rounds) {
-        char salt[_SALT_LEN];
-    
-        unsigned char seed[17]{};
-    	arc4random_init();
-    	
-        arc4random_buf(seed, 16);
-    
-        bcrypt_gensalt('b', rounds, seed, salt);
-    
-        std::string hash(61, '\0');
-        node_bcrypt(password.c_str(), password.size(), salt, &hash[0]);
-        hash.resize(60);
-        return hash;
-    }
-    
-    bool bcrypt::validatePassword(const std::string &password, const std::string &hash) {
-        std::string got(61, '\0');
-        node_bcrypt(password.c_str(), password.size(), hash.c_str(), &got[0]);
-        got.resize(60);
-        return hash == got;
-    }
 }
