@@ -22,7 +22,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${nlohmann_json_SOURCE_DIR})
 
 # Define the executable target
-add_executable(MyServerApp main.cpp ConnectionHandler.cpp authentication.cpp)
+add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentication.cpp)
 
 # Link the libraries
 target_link_libraries(MyServerApp -lcrypt)
