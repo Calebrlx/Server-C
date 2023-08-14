@@ -27,7 +27,7 @@ bool ConnectionHandler::start() {
         return false;
     }
 
-    while (true) {
+    while (run_server) { // Check the run_server flag in the loop
         socklen_t addrlen = sizeof(address);
         new_socket = accept(server_fd, (struct sockaddr *)&address, &addrlen);
         if (new_socket < 0) {
@@ -43,7 +43,8 @@ bool ConnectionHandler::start() {
 }
 
 void ConnectionHandler::stop() {
-    close(new_socket);
+    close(new_socket); // Close the client socket
+    close(server_fd);  // Close the server socket
 }
 
 void ConnectionHandler::handleClient(int client_socket) {

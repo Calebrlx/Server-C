@@ -9,6 +9,13 @@
 #include <unistd.h>
 #include "nlohmann/json.hpp"
 
+#ifndef CONNECTION_HANDLER_H
+#define CONNECTION_HANDLER_H
+
+#include <netinet/in.h>
+
+extern volatile bool run_server;
+
 class ConnectionHandler {
 public:
     ConnectionHandler();
@@ -32,3 +39,4 @@ private:
     void handleLoginRequest(int client_socket, const std::string& received);
     bool validateToken(const std::string& token); // Function to validate tokens
 };
+#endif // CONNECTION_HANDLER_H
