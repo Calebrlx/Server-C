@@ -148,5 +148,3 @@ void ConnectionHandler::sendJsonResponse(const nlohmann::json& json, int status_
 bool ConnectionHandler::validateToken(const std::string& token) {
     return Authentication::validateToken(token);
 }
-
-// ... other member functions as previously provided ...
