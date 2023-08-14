@@ -23,14 +23,16 @@ include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories("~/libbcrypt")
-include_directories(${MYSQLCONNECTORCPP_INCLUDE_DIRS})
 include_directories("/usr/include")
-include_directories(${MYSQLCPPCONN_INCLUDE_DIRS})
-link_directories(${MYSQLCONNECTORCPP_LIBRARY_DIRS})
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(PkgConfig)
+
+# Find the MySQL Connector/C++ library
+find_library(MYSQLCPPCONN_LIBRARIES
+             NAMES mysqlcppconn
+             HINTS /usr/lib /usr/local/lib)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp)
@@ -40,7 +42,6 @@ target_link_libraries(MyServerApp PRIVATE
   Threads::Threads
   nlohmann_json::nlohmann_json
   -lcrypt
-  /usr/local/lib/bcrypt.a)
-  ${MYSQLCPPCONN_LIBRARIES}
-
+  /usr/local/lib/bcrypt.a
+  ${MYSQLCPPCONN_LIBRARIES}) # Inside the target_link_libraries command
 
