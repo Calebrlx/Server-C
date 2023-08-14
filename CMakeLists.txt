@@ -19,13 +19,20 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
+
+
+
 include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories("~/libbcrypt")
+include_directories(${MYSQLCONNECTORCPP_INCLUDE_DIRS})
+link_directories(${MYSQLCONNECTORCPP_LIBRARY_DIRS})
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(PkgConfig)
+pkg_check_modules(MYSQLCONNECTORCPP REQUIRED mysqlcppconn)
 
 # Define the executable target
 add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager.cpp src/bcrypt.cpp)
@@ -35,5 +42,6 @@ target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
 target_link_libraries(MyServerApp PRIVATE /usr/local/lib/libbcrypt.a) # Link to libbcrypt
+target_link_libraries(MyServerApp ${MYSQLCONNECTORCPP_LIBRARIES})
 
 
