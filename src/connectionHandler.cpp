@@ -2,6 +2,8 @@
 #include "authentication.h"
 #include <thread>
 #include <iostream>
+#include <string> 
+#include <sys/socket.h>
 
 ConnectionHandler::ConnectionHandler() : server_fd(0), new_socket(0), address() {
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -135,14 +137,14 @@ void ConnectionHandler::sendSuccessResponse(int client_socket, const std::string
     sendJsonResponse(client_socket, response, 200);
 }
 
-void ConnectionHandler::sendJsonResponse(int client_socket, const nlohmann::json& json, int status_code) 
+void ConnectionHandler::sendJsonResponse(int client_socket, const nlohmann::json& json, int status_code) {
     std::string response_body = json.dump();
     std::string response = "HTTP/1.1 " + std::to_string(status_code) + " OK\r\n";
     response += "Content-Type: application/json\r\n";
     response += "Content-Length: " + std::to_string(response_body.size()) + "\r\n\r\n";
     response += response_body;
 
-    send(new_socket, response.c_str(), response.size(), 0);
+    send(client_socket, response.c_str(), response.size(), 0);
 }
 
 bool ConnectionHandler::validateToken(const std::string& token) {
