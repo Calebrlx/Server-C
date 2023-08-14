@@ -10,10 +10,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Include FetchContent module
 include(FetchContent)
 
-# Include the jwt-cpp library
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBJWT REQUIRED IMPORTED_TARGET jwt-cpp)
-
 # Include the nlohmann JSON library using FetchContent
 FetchContent_Declare(
   nlohmann_json
@@ -29,4 +25,4 @@ include_directories("/usr/local/include/jwt-cpp")
 add_executable(MyServerApp src/main.cpp src/ConnectionHandler.cpp src/authentication.cpp)
 
 # Link the libraries
-target_link_libraries(MyServerApp PRIVATE PkgConfig::LIBJWT nlohmann_json::nlohmann_json -lcrypt)
+target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
