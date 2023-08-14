@@ -34,10 +34,10 @@ namespace Authentication {
     }
 
     std::string hashPassword(const std::string& password) {
-        return BCrypt::generateHash(password);
+        return bcrypt::generateHash(password);
     }
 
     bool verifyPassword(const std::string& password, const std::string& hashed_password) {
-        return BCrypt::validatePassword(password, hashed_password);
+        return bcrypt::validatePassword(password, hashed_password);
     }
 }
