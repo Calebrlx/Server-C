@@ -19,11 +19,9 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-# Include the directories for headers
 include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories("/usr/local/include/bcrypt") # Include the path to bcrypt headers
 
 find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
@@ -35,5 +33,6 @@ add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentica
 target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(MyServerApp PRIVATE Threads::Threads)
 target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
-target_link_libraries(MyServerApp PRIVATE /usr/local/lib/bcrypt.a) # Directly link to bcrypt library
+target_link_libraries(MyServerApp PRIVATE /usr/local/lib/libbcrypt.a) # Link to libbcrypt
+
 
