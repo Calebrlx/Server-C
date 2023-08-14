@@ -93,10 +93,10 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     std::string username = json_obj["username"];
     std::string password = json_obj["password"];
 
-    if (users.find(username) == users.end() || !Authentication::verifyPassword(password, users[username])) {
-        sendErrorResponse(client_socket, "Invalid credentials", 401);
-        return;
-    }
+    if (!json_obj.contains("username") || !json_obj.contains("password")) {
+    sendErrorResponse(client_socket, "Missing username or password", 400);
+    return;
+}
 
     std::string token = Authentication::generateToken(username);
     nlohmann::json response;
@@ -108,17 +108,18 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     sendJsonResponse(client_socket, response, 200);
 }
 
-std::string ConnectionHandler::extractJsonBody(const std::string& request) {
-    std::size_t contentLengthStart = request.find("Content-Length: ");
-    if (contentLengthStart == std::string::npos) {
-        return ""; // Handle error if Content-Length header is not found
-    }
-    contentLengthStart += 16; // Length of "Content-Length: "
-    std::size_t contentLengthEnd = request.find("\r\n", contentLengthStart);
-    int contentLength = std::stoi(request.substr(contentLengthStart, contentLengthEnd - contentLengthStart));
+std::string json_str = extractJsonBody(received);
+if (json_str.empty()) {
+    sendErrorResponse(client_socket, "Invalid request body", 400);
+    return;
+}
 
-    std::size_t msg_start = request.find("\r\n\r\n");
-    return request.substr(msg_start + 4, contentLength); // Extract the JSON content according to the Content-Length
+nlohmann::json json_obj;
+try {
+    json_obj = nlohmann::json::parse(json_str);
+} catch (const nlohmann::json::exception& e) {
+    sendErrorResponse(client_socket, "Invalid JSON", 400);
+    return;
 }
 
 void ConnectionHandler::sendErrorResponse(int client_socket, const std::string& message, int status_code) {
