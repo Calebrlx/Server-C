@@ -140,11 +140,6 @@ void ConnectionHandler::handleLoginRequest(int client_socket, const std::string&
     sendJsonResponse(client_socket, response, 200);
 }
 
-std::string json_str = extractJsonBody(received);
-if (json_str.empty()) {
-    sendErrorResponse(client_socket, "Invalid request body", 400);
-    return;
-}
 
 nlohmann::json json_obj;
 try {
