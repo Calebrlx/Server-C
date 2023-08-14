@@ -23,8 +23,7 @@ FetchContent_MakeAvailable(nlohmann_json)
 include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories("/home/caleb/bcrypt") # Include the path to bcrypt headers
-include_directories("/usr/local/include/bcrypt")
+include_directories("/usr/local/include/bcrypt") # Include the path to bcrypt headers
 
 ## link_libraries("/usr/local/lib/bcrypt.a")
 
