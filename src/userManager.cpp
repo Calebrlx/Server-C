@@ -1,5 +1,7 @@
 #include "userManager.h"
 #include "authentication.h"
+#include <cppconn/prepared_statement.h>
+#include <cppconn/resultset.h>
 
 UserManager::UserManager() {
     connectToDatabase();
