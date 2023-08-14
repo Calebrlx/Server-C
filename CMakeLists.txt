@@ -19,9 +19,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(nlohmann_json)
 
-
-
-
 include_directories("/usr/local/include/jwt-cpp")
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -43,4 +40,7 @@ target_link_libraries(MyServerApp PRIVATE nlohmann_json::nlohmann_json -lcrypt)
 target_link_libraries(MyServerApp PRIVATE /usr/local/lib/libbcrypt.a) # Link to libbcrypt
 target_link_libraries(MyServerApp ${MYSQLCONNECTORCPP_LIBRARIES})
 target_link_libraries(MyServerApp "/usr/lib/aarch64-linux-gnu/libmysqlcppconn.so")
+target_link_libraries(MyServerApp PRIVATE "/usr/lib/aarch64-linux-gnu/libmysqlcppconn.so"
+    # other libraries...
+)
 
