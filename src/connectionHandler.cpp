@@ -62,7 +62,6 @@ void ConnectionHandler::handleClient(int client_socket) {
 
     close(client_socket); // Close the connection
 }
-
 void ConnectionHandler::handleRegisterRequest(int client_socket, const std::string& received) {
     std::string json_str = extractJsonBody(received);
     auto json_obj = nlohmann::json::parse(json_str);
