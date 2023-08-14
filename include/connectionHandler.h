@@ -25,8 +25,6 @@ private:
 
     std::string extractJsonBody(const std::string& request);
     void sendJsonResponse(const nlohmann::json& json, int status_code);
-    void handleRegisterRequest(const std::string& received);
-    void handleLoginRequest(const std::string& received);
     void sendErrorResponse(const std::string& message, int status_code);
     void sendSuccessResponse(const std::string& message);
     void handleClient(int client_socket);
