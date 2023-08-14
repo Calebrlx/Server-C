@@ -28,7 +28,7 @@ find_package(Threads REQUIRED)
 find_package(OpenSSL REQUIRED)
 
 # Define the executable target
-add_executable(MyServerApp src/main.cpp src/connectionHandler.cpp src/authentication.cpp)
+add_executable(MyServer src/main.cpp src/connectionHandler.cpp src/authentication.cpp src/userManager)
 
 # Link the libraries
 target_link_libraries(MyServerApp PRIVATE OpenSSL::SSL OpenSSL::Crypto)
